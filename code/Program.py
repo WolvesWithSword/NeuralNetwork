@@ -11,7 +11,7 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras import optimizers
 
 img_dir = "./image/"
-
+tf.config.experimental.list_physical_devices('GPU')
 def main():
     train_dir = os.path.join(img_dir, 'seg_train/seg_train')
     validation_dir = os.path.join(img_dir, 'seg_test/seg_test')
@@ -27,11 +27,11 @@ def main():
     model.add(layers.MaxPooling2D((2, 2)))
     model.add(layers.Flatten())
     model.add(layers.Dense(512, activation='relu'))
-    model.add(layers.Dense(1, activation='sigmoid'))
+    model.add(layers.Dense(6, activation='softmax'))
 
-    model.compile(loss='binary_crossentropy',
-        optimizer=optimizers.RMSprop(lr=1e-4),
-        metrics=['acc'])
+    model.compile(optimizer='adam',
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              metrics=['accuracy'])
 
 
     #rescale [0-255] to [0-1] float
@@ -56,6 +56,7 @@ def main():
         epochs=10,
         validation_data=validation_generator,
         validation_steps=50)
+        
 
 def test():
     (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
@@ -89,4 +90,5 @@ def test():
     
 
 if __name__ == "__main__":
-    main()
+    #main()
+    pass
