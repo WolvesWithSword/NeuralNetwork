@@ -9,7 +9,8 @@ from tensorflow.keras import models
 from tensorflow.keras import layers
 from tensorflow.keras.utils import to_categorical
 from keras.preprocessing.image import ImageDataGenerator
-from keras import optimizers
+from keras import optimizers, regularizers
+from tensorflow.python.keras.layers.normalization import BatchNormalization
 
 img_dir = "./image/"
 
@@ -21,15 +22,35 @@ def main():
     model = models.Sequential()
     model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(150, 150, 3)))
     model.add(layers.MaxPooling2D((2, 2)))
+    model.add(layers.Dropout(0.2))
+
     model.add(layers.Conv2D(64, (3, 3), activation='relu'))
     model.add(layers.MaxPooling2D((2, 2)))
+    model.add(layers.Dropout(0.2))
+
+
     model.add(layers.Conv2D(128, (3, 3), activation='relu'))
     model.add(layers.MaxPooling2D((2, 2)))
+    model.add(layers.Dropout(0.2))
+
+
     model.add(layers.Conv2D(128, (3, 3), activation='relu'))
     model.add(layers.MaxPooling2D((2, 2)))
-    model.add(layers.Dropout(0.4))
+    model.add(layers.Dropout(0.2))
+
+
     model.add(layers.Flatten())
-    model.add(layers.Dense(512, activation='relu'))
+    model.add(layers.Dropout(0.2))
+
+    model.add(layers.Dense(512, activation='relu', kernel_regularizer=regularizers.l2(0.001)))
+    model.add(layers.Dropout(0.2))
+    
+    model.add(layers.Dense(256, activation='relu', kernel_regularizer=regularizers.l2(0.001)))
+    model.add(layers.Dropout(0.2))
+
+    model.add(layers.Dense(128, activation='relu', kernel_regularizer=regularizers.l2(0.001)))
+    model.add(layers.Dropout(0.2))
+
     model.add(layers.Dense(6, activation='softmax'))
 
     model.compile(optimizer='adam',
@@ -53,8 +74,8 @@ def main():
         batch_size=32,
         class_mode='binary')
 
-    epochs = 20
-    nb_by_epoch = 200
+    epochs = 40
+    nb_by_epoch = 435
     history = model.fit(
         train_generator,
         steps_per_epoch=nb_by_epoch,
