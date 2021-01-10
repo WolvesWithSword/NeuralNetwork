@@ -3,6 +3,7 @@ import os
 import tensorflow as tf
 from tensorflow import keras
 import PIL
+import matplotlib.pyplot as plt
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras import models
 from tensorflow.keras import layers
@@ -11,8 +12,9 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras import optimizers
 
 img_dir = "./image/"
-tf.config.experimental.list_physical_devices('GPU')
+
 def main():
+    tf.config.experimental.enable_mlir_graph_optimization
     train_dir = os.path.join(img_dir, 'seg_train/seg_train')
     validation_dir = os.path.join(img_dir, 'seg_test/seg_test')
 
@@ -25,6 +27,7 @@ def main():
     model.add(layers.MaxPooling2D((2, 2)))
     model.add(layers.Conv2D(128, (3, 3), activation='relu'))
     model.add(layers.MaxPooling2D((2, 2)))
+    model.add(layers.Dropout(0.4))
     model.add(layers.Flatten())
     model.add(layers.Dense(512, activation='relu'))
     model.add(layers.Dense(6, activation='softmax'))
@@ -50,12 +53,37 @@ def main():
         batch_size=32,
         class_mode='binary')
 
-    history = model.fit_generator(
+    epochs = 20
+    nb_by_epoch = 200
+    history = model.fit(
         train_generator,
-        steps_per_epoch=60,
-        epochs=10,
+        steps_per_epoch=nb_by_epoch,
+        epochs=epochs,
         validation_data=validation_generator,
         validation_steps=50)
+
+    acc = history.history['accuracy']
+    val_acc = history.history['val_accuracy']
+
+    loss = history.history['loss']
+    val_loss = history.history['val_loss']
+
+    epochs_range = range(epochs)
+
+    plt.figure(figsize=(8, 8))
+    plt.subplot(1, 2, 1)
+    plt.plot(epochs_range, acc, label='Training Accuracy')
+    plt.plot(epochs_range, val_acc, label='Validation Accuracy')
+    plt.legend(loc='lower right')
+    plt.title('Training and Validation Accuracy')
+
+    plt.subplot(1, 2, 2)
+    plt.plot(epochs_range, loss, label='Training Loss')
+    plt.plot(epochs_range, val_loss, label='Validation Loss')
+    plt.legend(loc='upper right')
+    plt.title('Training and Validation Loss')
+    plt.show()
+        
         
 
 def test():
@@ -90,5 +118,4 @@ def test():
     
 
 if __name__ == "__main__":
-    #main()
-    pass
+    main()
