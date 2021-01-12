@@ -18,28 +18,73 @@ img_dir = "./image/"
 
 def main():
     epoch = 30
-    history = createModel(epoch,300,"model/first.h5")
-    plotTrain(history,epoch)
+    #(train_gen,validation_gen) = preprocessing(img_dir)
+    #history = createModel(train_gen, validation_gen, epoch, 300, "model/first.h5")
+    #plotTrain(history,epoch)
     models = loadModel("model/first.h5")
     models.summary()
 
-    image = tf.keras.preprocessing.image.load_img("./image/seg_test/seg_test/street/23286.jpg")
-    input_arr = keras.preprocessing.image.img_to_array(image)
-    input_arr=np.expand_dims(input_arr,axis=0)
-    
-
-    preds = models.predict(input_arr,verbose=True)
-    print(preds*100)
-
+    predict(models,"./image/seg_test/seg_test/glacier/20087.jpg",'probabilities')
 
 def loadModel(path):
     return load_model(path)
-        
-def createModel(epochs,steps_per_epoch,path='model/first.h5'):
-    tf.config.experimental.enable_mlir_graph_optimization
-    train_dir = os.path.join(img_dir, 'seg_train/seg_train')
-    validation_dir = os.path.join(img_dir, 'seg_test/seg_test')
 
+def predict(models,path,mode='category'):
+    np.set_printoptions(suppress=True)
+    #label list
+    label = ["buildings","forest","glacier","mountain","sea","street"]
+
+    image = tf.keras.preprocessing.image.load_img(path)
+    input_arr = keras.preprocessing.image.img_to_array(image)
+    input_arr = input_arr / 255 #rescale
+    input_arr=np.expand_dims(input_arr,axis=0)
+    
+    preds = models.predict(input_arr,verbose=True)
+    pred_list = preds[0]
+
+    i = 0
+    max_prob = 0
+    idx = -1
+
+    for percent in pred_list:
+
+        if(mode == "probabilities"):
+            print(label[i]," : ",percent,"%")
+
+        if(percent > max_prob):
+            idx = i
+            max_prob = percent
+        i+=1
+    
+    if(mode == "category"):
+        print(label[idx],"=",max_prob,"%")
+
+
+def preprocessing(img_dirct):
+    tf.config.experimental.enable_mlir_graph_optimization
+    train_dir = os.path.join(img_dirct, 'seg_train/seg_train')
+    validation_dir = os.path.join(img_dirct, 'seg_test/seg_test')
+
+    #rescale [0-255] to [0-1] float
+    train_datagen = ImageDataGenerator(rescale=1./255)
+    test_datagen = ImageDataGenerator(rescale=1./255)
+
+    train_generator = train_datagen.flow_from_directory(
+        train_dir,
+        target_size=(150, 150),
+        batch_size=32,
+        class_mode='binary')
+
+    validation_generator = test_datagen.flow_from_directory(
+        validation_dir,     
+        target_size=(150, 150),
+        batch_size=32,
+        class_mode='binary')
+
+    return (train_generator,validation_generator)
+
+def trainModel(train_generator,validation_generator,epochs,steps_per_epoch,path='model/first.h5'):
+    
     model = models.Sequential()
     model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(150, 150, 3)))
     model.add(layers.MaxPooling2D((2, 2)))
@@ -49,16 +94,13 @@ def createModel(epochs,steps_per_epoch,path='model/first.h5'):
     model.add(layers.MaxPooling2D((2, 2)))
     model.add(layers.Dropout(0.2))
 
-
     model.add(layers.Conv2D(128, (3, 3), activation='relu'))
     model.add(layers.MaxPooling2D((2, 2)))
     model.add(layers.Dropout(0.2))
 
-
     model.add(layers.Conv2D(128, (3, 3), activation='relu'))
     model.add(layers.MaxPooling2D((2, 2)))
     model.add(layers.Dropout(0.2))
-
 
     model.add(layers.Flatten())
     model.add(layers.Dropout(0.2))
@@ -77,24 +119,6 @@ def createModel(epochs,steps_per_epoch,path='model/first.h5'):
     model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
-
-
-    #rescale [0-255] to [0-1] float
-    train_datagen = ImageDataGenerator(rescale=1./255)
-    test_datagen = ImageDataGenerator(rescale=1./255)
-
-    train_generator = train_datagen.flow_from_directory(
-        train_dir,
-        target_size=(150, 150),
-        batch_size=32,
-        class_mode='binary')
-
-    validation_generator = test_datagen.flow_from_directory(
-        validation_dir,     
-        target_size=(150, 150),
-        batch_size=32,
-        class_mode='binary')
-
 
     history = model.fit(
         train_generator,
@@ -129,7 +153,7 @@ def plotTrain(history,epochs):
     plt.title('Training and Validation Loss')
     plt.show()    
 
-def test():
+def deprecated():
     (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
     print(train_images.shape)
     print(train_images[0])
