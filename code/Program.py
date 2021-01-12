@@ -11,10 +11,31 @@ from tensorflow.keras.utils import to_categorical
 from keras.preprocessing.image import ImageDataGenerator
 from keras import optimizers, regularizers
 from tensorflow.python.keras.layers.normalization import BatchNormalization
+from keras.models import load_model
+from tensorflow.python.keras.applications.densenet import decode_predictions
 
 img_dir = "./image/"
 
 def main():
+    epoch = 30
+    history = createModel(epoch,300,"model/first.h5")
+    plotTrain(history,epoch)
+    models = loadModel("model/first.h5")
+    models.summary()
+
+    image = tf.keras.preprocessing.image.load_img("./image/seg_test/seg_test/street/23286.jpg")
+    input_arr = keras.preprocessing.image.img_to_array(image)
+    input_arr=np.expand_dims(input_arr,axis=0)
+    
+
+    preds = models.predict(input_arr,verbose=True)
+    print(preds*100)
+
+
+def loadModel(path):
+    return load_model(path)
+        
+def createModel(epochs,steps_per_epoch,path='model/first.h5'):
     tf.config.experimental.enable_mlir_graph_optimization
     train_dir = os.path.join(img_dir, 'seg_train/seg_train')
     validation_dir = os.path.join(img_dir, 'seg_test/seg_test')
@@ -45,11 +66,11 @@ def main():
     model.add(layers.Dense(512, activation='relu', kernel_regularizer=regularizers.l2(0.001)))
     model.add(layers.Dropout(0.2))
     
-    model.add(layers.Dense(256, activation='relu', kernel_regularizer=regularizers.l2(0.001)))
-    model.add(layers.Dropout(0.2))
+    # model.add(layers.Dense(256, activation='relu', kernel_regularizer=regularizers.l2(0.001)))
+    # model.add(layers.Dropout(0.2))
 
-    model.add(layers.Dense(128, activation='relu', kernel_regularizer=regularizers.l2(0.001)))
-    model.add(layers.Dropout(0.2))
+    # model.add(layers.Dense(128, activation='relu', kernel_regularizer=regularizers.l2(0.001)))
+    # model.add(layers.Dropout(0.2))
 
     model.add(layers.Dense(6, activation='softmax'))
 
@@ -74,15 +95,18 @@ def main():
         batch_size=32,
         class_mode='binary')
 
-    epochs = 40
-    nb_by_epoch = 435
+
     history = model.fit(
         train_generator,
-        steps_per_epoch=nb_by_epoch,
+        steps_per_epoch=steps_per_epoch,
         epochs=epochs,
         validation_data=validation_generator,
         validation_steps=50)
 
+    model.save(path)
+    return history
+
+def plotTrain(history,epochs):
     acc = history.history['accuracy']
     val_acc = history.history['val_accuracy']
 
@@ -103,9 +127,7 @@ def main():
     plt.plot(epochs_range, val_loss, label='Validation Loss')
     plt.legend(loc='upper right')
     plt.title('Training and Validation Loss')
-    plt.show()
-        
-        
+    plt.show()    
 
 def test():
     (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
