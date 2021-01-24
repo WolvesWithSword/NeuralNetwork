@@ -231,75 +231,43 @@ Sur le pc le plus performant du groupe, le modèle final prend environ 15-20 min
 
 \newpage
 \section{Résultat obtenus}
-Il est à noter que les résultats peuvent être légèrement différent à chaque appel du programme ainsi les graphiques qui vont suivre ne sont pas forcément absolus. 
+Il est à noter que les résultats peuvent être légèrement différent à chaque entrainement du programme ainsi les graphiques qui vont suivre ne sont pas forcément absolus. 
 
 \subsection{Résultat général}
-Il est facilement remarquable sur la \textit{figure 5} que la valeur 0 (donc l'absence du couple E\#C) possèdent un bien meilleur score que la valeur 1. En effet un commentaire parlant d'un clavier uniquement ne va pas parler d'un écran ou d'une souris, ce qui créer un nombre conséquent de données négative (c-à-d 0) pour chaque classes. Il est alors plus facile pour l'IA de déterminé si la phrase n'appartient pas à un couple que l'inverse.\\
+Pour commencer, je vais présenter nos résultats de manière général. Au niveau de la « precision », le « recall » et « f1-score », nous avont une moyenne de 88\% ce qui est un score plutôt satisfaisant.\\
+Maintenant, nous allons légèrement décomposer ce score, voici un graphique reprenant les différentes catégories.\\
+Ce graphique nous permet pour chaque classe de voir comment l’IA a réussi à classifier pour chacune de classe. Pour chaque classe nous avons 3 données, le recall, la precision et le f1-score.\\
+Le f1-score est un mixte des deux et est donc l’élément le plus favorable à regarder.
+Tout d’abord, nous pouvons voir que la classe « forest » est la plus facile à repérer pour l’IA avec un f1-score de 96\% ce qui est plus qu’acceptable. De plus, il arrive rarement que l’on assigne cette classe a une image qui n’est pas une forêt (« recall » a 99\%).
+De plus, la classe « mountain » est la classe qui a le moins bon f1-score mais qui reste plus qu’acceptable étant donné qu’il est a 83\%. \\
+\end{multicols}
 
-On constate effectivement que le f1-score des valeurs 1 de chaque classe est assez variable et atteins parfois même 0\%. Cela s'explique avec deux raisons: 
- 
-\noindent Soit par une \textit{précision} de 0\%, car certain couple dans les données de test n'ont qu'une apparition ce qui rend le résultat binaire ou bien simplement par l'échec de l'IA à classer correctement les phrases (les justifications de cette lacune sera expliquée dans l'analyse du résultat suivant). 
-
-\noindent Soit par un \textit{recall} faible, car l'IA peut facilement trouvé la bonne entité mais pas la bonne catégorie et vis-versa, et cela se traduit par une réduction du recall et donc du f1-score.\\
-
-Comme dit précédemment, la valeur du f1-score des valeurs 0 est très élévé, environ 95\%, ainsi ne nous y attarderont pas plus que ça dans les analyses suivantes et nous concentrerons plus sur les résultats et scores obtenus pour les valeurs 1.
-
-\begin{figure*}[t]
+\begin{figure*}[h]
     \begin{center}
-        \includegraphics[width=1.15\textwidth]{3808.jpg}
+        \includegraphics[width=1.15\textwidth]{./img/class_plot.png}
     \end{center}
-    \caption{précision et support de la valeur 1}
+    \caption{Statistique général de chaque classe}
 \end{figure*}
-\newpage
-\subsection{Résultat pour la valeur "1"}
-On remarque premièrement que les précisions de chaque couple E\#C ne sont pas homogène. Cela s'explique par la différence majeure entre chaque entités et les catégories qui s'y rapportent. En effet il est beaucoup plus simple et parler de l'ergonomie d'une souris (ou d'un pavé tactile) que de l'ergonomie d'un OS, ce qui explique par exemple l'écart de précision entre ces deux couples. \\
+\begin{multicols}{2} 
 
-De plus, certain couples possèdent un jeu de données qui se veut parfois peu ressemblant entre chaque élément y appartenant. Par exemple, dans le commentaire d'un clavier, il y aura beaucoup de chance de trouver les mots "touche","clavier" ou bien "pavé numérique", ce qui focalise l'IA sur certain éléments clés et ressort de tout cela une bonne précision. Mais par exemple, le couple \textit{COMPANY\#GENERAL} peut très bien parler de \textit{Windows} comme d'\textit{Apple}, \textit{Dell} , \textit{toshiba} ... de mille et une façon, ce que l'IA a du mal à assimiler. \\
+\subsection{Analyse des classes détailler}
 
-Enfin, une relation logique apparait entre le support (nombre d'éléments) et la précision. Moins on a de données plus la précision est extrême (0\% ou bien 100\%) car soit l'IA a tout juste, soit tout faux. Au contraire, lors d'une présence d'un nombre de données assez conséquent (environ 10), la précision tend à dépasser les 50\% ce qui pourrait être plus représentatif du niveau de classification. Typiquement, le nombre de données le plus élevé (214) est celui du couple \textit{LAPTOP\#GENERAL} (ce qui est assez logique en soit) et il possède une précision de 71\%.
+Maintenant, nous allons voir plus précisément les erreurs de notre IA. Pour cela nous allons utiliser le graphique suivant montrant le recall pour chaque catégorie.\\
+Si nous regardons la classe buildings, nous pouvons voir que le recall vient principalement de la classe Street avec 8.01\% des élément qui on était classé en buildings alors qu’il devait être classifier en street. Nous retrouvons aussi l’inverse avec 8.18\% en street alors qu’il devait être en buildings. Cela peut s’expliquer facilement, tout d’abord, les deux classes représente généralement des villes, sur une même photo, il peut y avoir une rue et un bâtiment. Dans ce cas-là il peut être difficile à l’IA de pouvoir dire si la photo veut montrer principalement une rue ou les bâtiments qui l’entoure.\\
+La deuxième comparaison que nous pouvons faire est celle entre « glacier » et « mountain ». Pour ces deux classes, il y a un pourcentage de classification en montagne de 13.02\% alors que ce sont des glaciers et de 9.33\% pour l’inverse. Cela est du a notre jeu de données. Comme bue précédemment (cf. 3.2), il y a beaucoup d’image sans glace qui sont considérer comme des glaciers et d’image de montagne geler qui peuvent être trouver dans le jeu de données de ces deux catégories.\\
+En ce qui concerne la classification « sea », nous pouvons voir que l’on a certaine photo ou l’on voit de l’eau comme des lac, la mer ou encore des rivières. Il est probable que la probabilité de 6\% soit du a ce type d’image mais il doit être possible d’améliorer celle-ci.\\
+Pour finir, la classe « forest » qui avait des résultats vraiment satisfaisant, nous pouvons le constater aussi sur ce graphique avec très peut de présence des autre classe.\\
 
-\begin{figure*}[t]
+\end{multicols}
+\begin{figure*}[h]
     \begin{center}
-        \includegraphics[width=1.15\textwidth]{3808.jpg}
+        \includegraphics[width=0.95\textwidth]{./img/pie_diagram.png}
     \end{center}
-    \caption{score par entités}
+    \caption{Recall de chaque classe}
 \end{figure*}
+
 \newpage
-\subsection{Résultat par entités}
-Suite à de nombreux tests sur des classifications de phrases, nous avons remarqué que l'IA se trompe parfois dans le ou les couple E\#C mais arrive tout de même à reconnaitre la ou les entités E qui sont ciblés dans la phrase. Nous avons donc regroupé par entité pour plus de pertinence et avons calculé la \textit{precision}, le \textit{recall} et le \textit{f1-score} de chacune.\\
-
-Là encore attention, malgré le regroupement par entité, certaines n'ont qu'un seule données, ce qui explique les scores à 50\%. De plus, nous avons récupéré la macro-moyenne (moyenne brute) et non la moyenne pondérée car celle-ci est figé à 99\% pour toutes les entités (dû à grand nombre de cas à 0 et très peu d'erreur de l'IA dessus comme expliqué précédemment), il n'est donc pas intéressant de faire une étude dessus. Cette macro-moyenne se retrouve donc à cette valeur lorsqu'il n'y a qu'une donnée pour la valeur 1 et que l'IA ne retrouve pas la bonne entité E suivant le simple calcule suivant : 
-
-\begin{equation}
-(99 + 0) / 2 \simeq 50 \%.
-\end{equation}
-
-Mis à part ces cas précis, les scores obtenus sont relativement corrects et on peut facilement affirmer que l'IA arrive à reconnaitre les entités cible d'un commentaires. Toutefois, nous avons remarqué que lorsque la phrase aborde différentes entités de manière brève, par exemple \textit{"L'ordinateur est cool, le clavier et le son sont correct mais l'affichage est magnifique"}, la classification de toutes ces entités semble très difficile pour l'IA. \\
-
-\begin{figure*}[t]
-    \begin{center}
-        \includegraphics[width=1.15\textwidth]{3808.jpg}
-    \end{center}
-    \caption{score de la polarité}
-\end{figure*}
-\newpage
-\subsection{Résultat de la polarité}
-Tout d'abord voici le nombre de données de base par polarité :
-\begin{itemize}
-\item negative : 768
-\item positive : 917
-\item neutral : 430
-\item mixed : 46
-\end{itemize}
-\medskip
-On constate que la \textit{précision}, le \textit{recall} et le \textit{f1-score} sont relativement proche pour chaque polarité ce qui ne souligne pas de problème particulier dans une classe. 
-Il est notable que \textit{positive} et \textit{negative} sont les deux  classes qui comportent le plus de données, il est donc normal que leur score soit les plus élevés. \\
-
-Le fait d'avoir un commentaire positif semble d'ailleurs plus facile à détecter qu'un commentaire négatif. Cela s'explique par le fait que souvent, un commentaire négatif consiste en l'énumération des défauts de l'ordinateur sans forcément de mot clé signifiant une insatisfaction ou un mécontentement, l'IA à donc plus de mal à déterminé si cela est négatif (une énumération de fait pouvant être neutre). \\
-
-Ainsi, la polarité \textit{neutral} peut ressortir également de plusieurs tournure de phrase. Aucun mot clé n'est propre à un avis neutre, ce qui rend plus difficile sa classification et lui donne des score relativement médians. \\
-
-Finalement, la polarité \textit{mixed} possède le score le plus bas car d'une part, le jeu de données est très faible relativement aux autres, mais également, c'est la polarité la plus dure à classifiée et n'existe pas réellement. Nous l'avons créer dû à la simplification que nous avons faite d'avoir une polarité générale et non propre à chaque couples E\#C. Il est donc évident qu'elle n'est pas absolue et consiste à la fusion d'un avis positif et négatif. 
+\begin{multicols}{2} 
 
 \newpage
 \section{Les améliorations possibles}

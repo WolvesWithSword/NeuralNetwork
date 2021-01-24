@@ -1,28 +1,26 @@
 \babel@toc {french}{}
-\contentsline {section}{\numberline {1}Pr\IeC {\'e}sentation g\IeC {\'e}n\IeC {\'e}rale du projet}{2}{section.1}% 
-\contentsline {section}{\numberline {2}Descriptif du sujet et ses finalit\IeC {\'e}s}{2}{section.2}% 
-\contentsline {subsection}{\numberline {2.1}Descriptif du sujet}{2}{subsection.2.1}% 
-\contentsline {subsection}{\numberline {2.2}Les cat\IeC {\'e}gories}{2}{subsection.2.2}% 
-\contentsline {section}{\numberline {3}Description des donn\IeC {\'e}es}{3}{section.3}% 
-\contentsline {subsection}{\numberline {3.1}Le jeu de donn\IeC {\'e}es}{3}{subsection.3.1}% 
-\contentsline {subsection}{\numberline {3.2}Des donn\IeC {\'e}es pas forcement bien classifi\IeC {\'e}e}{3}{subsection.3.2}% 
-\contentsline {section}{\numberline {4}Impl\IeC {\'e}mentation de l'algorithme}{5}{section.4}% 
-\contentsline {subsection}{\numberline {4.1}preprocessing}{5}{subsection.4.1}% 
-\contentsline {subsection}{\numberline {4.2}trainModel}{5}{subsection.4.2}% 
-\contentsline {subsubsection}{\numberline {4.2.1}Description du mod\IeC {\`e}le}{5}{subsubsection.4.2.1}% 
-\contentsline {subsubsection}{\numberline {4.2.2}Evolution du mod\IeC {\`e}le}{6}{subsubsection.4.2.2}% 
-\contentsline {subsection}{\numberline {4.3}predict et m\IeC {\'e}thodes graphiques}{7}{subsection.4.3}% 
-\contentsline {subsection}{\numberline {4.4}Temps d'apprentissage du mod\IeC {\`e}le}{7}{subsection.4.4}% 
-\contentsline {section}{\numberline {5}R\IeC {\'e}sultat obtenus}{8}{section.5}% 
-\contentsline {subsection}{\numberline {5.1}R\IeC {\'e}sultat g\IeC {\'e}n\IeC {\'e}ral}{8}{subsection.5.1}% 
-\contentsline {subsection}{\numberline {5.2}R\IeC {\'e}sultat pour la valeur "1"}{9}{subsection.5.2}% 
-\contentsline {subsection}{\numberline {5.3}R\IeC {\'e}sultat par entit\IeC {\'e}s}{10}{subsection.5.3}% 
-\contentsline {subsection}{\numberline {5.4}R\IeC {\'e}sultat de la polarit\IeC {\'e}}{11}{subsection.5.4}% 
-\contentsline {section}{\numberline {6}Les am\IeC {\'e}liorations possibles}{12}{section.6}% 
-\contentsline {subsection}{\numberline {6.1}Travail sur le jeu de donn\IeC {\'e}es}{12}{subsection.6.1}% 
-\contentsline {subsection}{\numberline {6.2}Travail sur le mod\IeC {\`e}le}{12}{subsection.6.2}% 
-\contentsline {section}{\numberline {7}Conclusion}{13}{section.7}% 
-\contentsline {section}{\numberline {8}Membres du groupe}{13}{section.8}% 
-\contentsline {subsection}{\numberline {8.1}Yann MARTIN D'ESCRIENNE}{13}{subsection.8.1}% 
-\contentsline {subsection}{\numberline {8.2}Yohann TOGNETTI}{13}{subsection.8.2}% 
-\contentsline {section}{\numberline {9}R\IeC {\'e}f\IeC {\'e}rences}{13}{section.9}% 
+\contentsline {section}{\numberline {1}Présentation générale du projet}{2}{section.1}%
+\contentsline {section}{\numberline {2}Descriptif du sujet et ses finalités}{2}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Descriptif du sujet}{2}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Les catégories}{2}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Description des données}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Le jeu de données}{3}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Des données pas forcement bien classifiée}{3}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Implémentation de l'algorithme}{5}{section.4}%
+\contentsline {subsection}{\numberline {4.1}preprocessing}{5}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}trainModel}{5}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Description du modèle}{5}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}Evolution du modèle}{6}{subsubsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.3}predict et méthodes graphiques}{7}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Temps d'apprentissage du modèle}{7}{subsection.4.4}%
+\contentsline {section}{\numberline {5}Résultat obtenus}{8}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Résultat général}{8}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Analyse des classes détailler}{8}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Les améliorations possibles}{10}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Travail sur le jeu de données}{10}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Travail sur le modèle}{10}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Conclusion}{11}{section.7}%
+\contentsline {section}{\numberline {8}Membres du groupe}{11}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Yann MARTIN D'ESCRIENNE}{11}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Yohann TOGNETTI}{11}{subsection.8.2}%
+\contentsline {section}{\numberline {9}Références}{11}{section.9}%
