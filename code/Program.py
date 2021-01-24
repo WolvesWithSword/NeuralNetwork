@@ -13,18 +13,45 @@ from keras import optimizers, regularizers
 from tensorflow.python.keras.layers.normalization import BatchNormalization
 from keras.models import load_model
 from tensorflow.python.keras.applications.densenet import decode_predictions
+from tensorflow.python.ops.metrics_impl import mean_per_class_accuracy
+from sklearn.metrics import classification_report, confusion_matrix
 
 img_dir = "./image/"
+LABEL = ["buildings","forest","glacier","mountain","sea","street"]
 
 def main():
-    epoch = 30
-    #(train_gen,validation_gen) = preprocessing(img_dir)
-    #history = createModel(train_gen, validation_gen, epoch, 300, "model/first.h5")
-    #plotTrain(history,epoch)
-    models = loadModel("model/first.h5")
+    #autoTrain()
+    models = loadModel("model/best.h5")
     models.summary()
-
     predict(models,"./image/seg_test/seg_test/glacier/20087.jpg",'probabilities')
+    plotAccuracyByClass(models)
+
+def autoTrain():
+    epoch = 60
+    step_by_epoch = 430 
+    (train_gen,validation_gen) = preprocessing(img_dir)
+    history = trainModel(train_gen, validation_gen, epoch, step_by_epoch, "model/best.h5")
+    plotTrain(history,epoch)
+
+def plotAccuracyByClass(model):
+    validation_dir = os.path.join(img_dir, 'seg_test/seg_test')
+    test_datagen = ImageDataGenerator(rescale=1./255)
+
+    validation_generator = test_datagen.flow_from_directory(
+        validation_dir,     
+        target_size=(150, 150),
+        batch_size=32,
+        class_mode='binary',
+        shuffle=False)
+    Y_pred = model.predict(validation_generator)
+    y_pred = np.argmax(Y_pred, axis=1)
+    realpred = validation_generator.classes
+    print(y_pred)
+    print(realpred)
+
+    print(confusion_matrix(realpred, y_pred))
+    print(classification_report(validation_generator.classes, y_pred, target_names=LABEL))
+    
 
 def loadModel(path):
     return load_model(path)
@@ -32,7 +59,7 @@ def loadModel(path):
 def predict(models,path,mode='category'):
     np.set_printoptions(suppress=True)
     #label list
-    label = ["buildings","forest","glacier","mountain","sea","street"]
+    label = LABEL
 
     image = tf.keras.preprocessing.image.load_img(path)
     input_arr = keras.preprocessing.image.img_to_array(image)
@@ -46,8 +73,8 @@ def predict(models,path,mode='category'):
     max_prob = 0
     idx = -1
 
-    for percent in pred_list:
-
+    for taux in pred_list:
+        percent = round(taux*100,2)
         if(mode == "probabilities"):
             print(label[i]," : ",percent,"%")
 
@@ -103,7 +130,7 @@ def trainModel(train_generator,validation_generator,epochs,steps_per_epoch,path=
     model.add(layers.Dropout(0.2))
 
     model.add(layers.Flatten())
-    model.add(layers.Dropout(0.2))
+    model.add(layers.Dropout(0.4))
 
     model.add(layers.Dense(512, activation='relu', kernel_regularizer=regularizers.l2(0.001)))
     model.add(layers.Dropout(0.2))
