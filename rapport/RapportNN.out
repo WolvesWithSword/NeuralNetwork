@@ -2,9 +2,9 @@
 \BOOKMARK [1][-]{section.2}{Descriptif du sujet et ses finalit\351s}{}% 2
 \BOOKMARK [2][-]{subsection.2.1}{Descriptif du sujet}{section.2}% 3
 \BOOKMARK [2][-]{subsection.2.2}{Les cat\351gories}{section.2}% 4
-\BOOKMARK [1][-]{section.3}{Jeux de donn\351es}{}% 5
-\BOOKMARK [2][-]{subsection.3.1}{Structure des jeux de donn\351es}{section.3}% 6
-\BOOKMARK [2][-]{subsection.3.2}{Modification des jeux de donn\351es}{section.3}% 7
+\BOOKMARK [1][-]{section.3}{Description des donn\351es}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Le jeu de donn\351es}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Des donn\351es pas forcement bien classifi\351e}{section.3}% 7
 \BOOKMARK [1][-]{section.4}{Impl\351mentation de l'algorithme}{}% 8
 \BOOKMARK [2][-]{subsection.4.1}{preprocessing}{section.4}% 9
 \BOOKMARK [2][-]{subsection.4.2}{PreProcessing.py}{section.4}% 10

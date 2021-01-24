@@ -98,36 +98,63 @@ Celles-ci sont au nombre de 6, chacune correspond à une catégorie de paysage o
  \textit{Sea} représente les décors marins en général, que ce soit une plage, la mer avec ou sans terre ferme, ou bien même un décor sous-marin, tout cela va dans cette catégorie. \\
 Enfin la catégorie \textit{Street} met en avant une rue, qui peut donc facilement se rapprocher de \textit{building} étant donnée la présence quasi-permanente de bâtiments dans une rue, on y trouve souvent des passant et des voitures.  
 
-\section{Jeux de données}
-Les jeux de données se divisent en deux groupes : le jeu de données d'entrée correspondant à ce que l'IA va utiliser pour s'entrainer et celui de test sur lequel les mesures seront effectuées. Tout deux proviennent du site du SemEval. 
+\section{Description des données}
 
-\subsection{Structure des jeux de données}
-\noindent Ce sont tout deux des documents XML possédant la structure suivante (simplifiée) :  
+\subsection{Le jeu de données}
+
+	Les données utiliser pour pouvoir réaliser cet apprentissage viennent du jeu de données « Intel Image Classification ». Ce jeu de données est composé d’un totale de 24.347 images et elles sont toutes de taille 150x150 px. Le jeu de données est réparti en trois fichier, seg\_train, seg\_test et seg\_pred. \\
+Pour les fichiers de train et de test, sont tous deux repartis en 6 sous fichier qui sont nos classification (street, buildings, …) et qui possèdent chacun les image classifier correspondantes.\\
+Le fichier train possèdent en tout 14.046 image repartie avec les proportions plutôt équivalente comme nous pouvons le voir :
+
+\begin{itemize}
+\item Buildings 2.191 images
+\item Forest 2.271 images
+\item Glacier 2.416 images
+\item Mountain 2.512 images
+\item Sea 2.274 images
+\item Street 2.382 images
+\end{itemize}
+
+Le fichier test possèdent en tout 3000 image repartie avec les proportions plutôt équivalente comme nous pouvons le voir :
+
+\begin{itemize}
+\item Buildings 437 images
+\item Forest 474 images
+\item Glacier 553 images
+\item Mountain 525 images
+\item Sea 510 images
+\item Street 501 images
+\end{itemize}
+Les deux jeux de données ont un nombre de données plutôt important pour chaque classe, cela est plutôt favorable pour pouvoir faire une classification correcte.\\
+Le dernier répertoire, celui de tes possèdent 7.301 qui sont de toutes classe.
+
+\subsection{Des données pas forcement bien classifiée}
+L’une de nos découvertes sur les jeux de données était que certaine image était mal classifiée. Voici certains exemples qui illustre nos propos :
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.55]{3808.jpg}
-\caption{\small{structure du fichier XML}}
+\includegraphics[scale=1]{./img/20662.jpg}
+\caption{\small{Image 20662.jpg, catégorie Mountain du jeu de test.}}
 \end{center}
 \end{figure}
+ 
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=1]{./img/23589.jpg}
+\caption{\small{Image 23589.jpg, catégorie Glacier du jeu de test.}}
+\end{center}
+\end{figure}
+Ces deux images n’ont pas la même catégorie et pourtant, elles se ressemble fortement car ce sont de montagne enneiger. Les catégorie Mountain et Glacier sont toutes deux correct, mais dans ce cas-là l’ia vas surement se tromper sur l’une des deux.\\
+Un autre type de problème sont les images hors contexte donc difficilement classifiable comme celle-là :
+ 
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=1]{./img/1512.jpg}
+\caption{\small{Image 1512.jpg, catégorie glacier du jeu de train.}}
+\end{center}
+\end{figure}
+Certaines images vont donc automatiquement faire descendre la précision car même pour un nous il est difficile de classifier comme ce qui est attendue. Néanmoins, La plupart des autres données sont correct et vont nous permettre de faire une bonne classification.
 
-\subsection{Modification des jeux de données}
-Suite à notre implémentation de notre IA qui sera décrite dans le chapitre suivant, de nombreux problèmes nous ont forcés à ajouter nous même des phrases dans le jeu de données d'entrainement.\\
-
-En effet notre IA répond de la présence ou non de chaque couple E\#C pour chaque combinaison d'entité E et catégorie C. Cela se traduit par une nécessité de nombreuses données appartenant à chacun des couples pouvant apparaitre afin d'obtenir une fonction d'évaluation optimale. Dans le cas contraire le résultat est rarement celui attendu, il nous a donc fallu compléter le jeu de données.
-
-\paragraph{}
-Environ 350 phrases ont été ajoutées, toutes sont la section 'sentences' d'\textbf{ID 198}. Certaines proviennent d'avis de consommateur sur les ordinateur portables les plus commentés sur Amazon (en anglais), notamment pour les phrases portant sur les clavier, écran, pavé tactile et batterie, qui sont de manière générale beaucoup cité dans une revue de produit. Nous avons rédigés le reste pour les catégories plus complexe et moins abordées. Par exemple la qualité des lecteurs DVD ou bien l'ergonomie des OS. Cela s'éloigne d'un cas réel mais reste tout de même nécessaire au bon apprentissage de l'IA. \\ 
-
-\noindent \textit{Remarque : } Il est à noté que certain couple n'apparaissent ni dans les données d'entrainement, ni dans les données de test. Par simplification, ces couples ont été ignorés et aucunes phrases n'est étiquetées avec.
-
-\begin{figure*}[th]
-    \begin{center}
-        \includegraphics[width=1\textwidth]{3808.jpg}
-    \end{center}
-\caption{\small{dataframe du fichier XML}}
-\end{figure*}
-\newpage
 
 \section{Implémentation de l'algorithme}
 Notre algorithme est développé en python. Il se trouve dans le fichier \textit{Program.py} et possède 4 méthodes majeures qui ont permis de répondre aux attentes du sujet. Nous allons donc présenter chacune de ces méthodes avec un peu plus de détails. \\
