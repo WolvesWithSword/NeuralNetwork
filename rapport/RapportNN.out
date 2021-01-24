@@ -6,7 +6,7 @@
 \BOOKMARK [2][-]{subsection.3.1}{Structure des jeux de donn\351es}{section.3}% 6
 \BOOKMARK [2][-]{subsection.3.2}{Modification des jeux de donn\351es}{section.3}% 7
 \BOOKMARK [1][-]{section.4}{Impl\351mentation de l'algorithme}{}% 8
-\BOOKMARK [2][-]{subsection.4.1}{DataInitializer.py}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.1}{preprocessing}{section.4}% 9
 \BOOKMARK [2][-]{subsection.4.2}{PreProcessing.py}{section.4}% 10
 \BOOKMARK [2][-]{subsection.4.3}{Classify.py}{section.4}% 11
 \BOOKMARK [2][-]{subsection.4.4}{PlotResult.py}{section.4}% 12

@@ -153,7 +153,7 @@ def plotTrain(history,epochs):
     plt.title('Training and Validation Loss')
     plt.show()    
 
-def deprecated():
+def deprecated(): #first try don't pay too much attention
     (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
     print(train_images.shape)
     print(train_images[0])

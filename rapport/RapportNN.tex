@@ -92,8 +92,11 @@ Celles-ci sont au nombre de 6, chacune correspond à une catégorie de paysage o
 \end{itemize}
 
 \bigskip
-\textit{Building} correspond ainsi à des bâtiments comme une maison ou un immeuble qui se trouve généralement dans une ville. \textit{Forest} comme son nom l'indique correspond à un paysage forestier avec la présence ou non d'animaux. 
-\textit{Glacier} quant à lui représente une montagne enneigée ou bien un glacier ou morceaux de glace de la banquise, cette catégorie est extrêmement corrélée avec \textit{Moutain} car celle-ci correspond à une montagne pouvant parfois aussi être enneigé. Le découpage n'est pas toujours pertinent et encore plus ici, nous en parleront dans la section \textit{Description des données}. \textit{Sea} représente les décors marins en général, que ce soit une plage, la mer avec ou sans terre ferme, ou bien même un décor sous-marin, tout cela va dans cette catégorie. Enfin la catégorie \textit{Street} met en avant une rue, qui peut donc facilement se rapprocher de \textit{building} étant donnée la présence quasi-permanente de bâtiments dans une rue, on y trouve souvent des passant et des voitures.  
+\textit{Building} correspond ainsi à des bâtiments comme une maison ou un immeuble qui se trouve généralement dans une ville. \\
+\textit{Forest} comme son nom l'indique correspond à un paysage forestier avec la présence ou non d'animaux. \\
+\textit{Glacier} quant à lui représente une montagne enneigée ou bien un glacier ou morceaux de glace de la banquise, cette catégorie est extrêmement corrélée avec \textit{Moutain} car celle-ci correspond à une montagne pouvant parfois aussi être enneigé. Le découpage n'est pas toujours pertinent et encore plus ici, nous en parleront dans la section \textit{Description des données}.\\
+ \textit{Sea} représente les décors marins en général, que ce soit une plage, la mer avec ou sans terre ferme, ou bien même un décor sous-marin, tout cela va dans cette catégorie. \\
+Enfin la catégorie \textit{Street} met en avant une rue, qui peut donc facilement se rapprocher de \textit{building} étant donnée la présence quasi-permanente de bâtiments dans une rue, on y trouve souvent des passant et des voitures.  
 
 \section{Jeux de données}
 Les jeux de données se divisent en deux groupes : le jeu de données d'entrée correspondant à ce que l'IA va utiliser pour s'entrainer et celui de test sur lequel les mesures seront effectuées. Tout deux proviennent du site du SemEval. 
@@ -125,26 +128,22 @@ Environ 350 phrases ont été ajoutées, toutes sont la section 'sentences' d'\t
 \caption{\small{dataframe du fichier XML}}
 \end{figure*}
 \newpage
+
 \section{Implémentation de l'algorithme}
-Notre algorithme est développé en python. Il se divise en 4 fichiers de code ayant chacun un rôle précis dans l'implémentation de l'algorithme d'apprentissage. 
+Notre algorithme est développé en python. Il se trouve dans le fichier \textit{Program.py} et possède 4 méthodes majeures qui ont permis de répondre aux attentes du sujet. Nous allons donc présenter chacune de ces méthodes avec un peu plus de détails. \\
 
-\subsection{DataInitializer.py}
-Ce fichier permet de lire un documents XML du jeu de données et regroupe les informations essentielles dans un dataframe de la librairie \textit{panda}. Chacune des phrases correspondent à une ligne dans le dataframe. \\
+La réussite de ce sujet est grandement due au livre \textbf{L'APPRENTISSAGE PROFOND AVEC PYTHON} de \textit{François CHOLLET}. La lecture de son travail nous à permis un apprentissage rapide du fonctionnement des réseaux neuronal convolutif ainsi que leur mise en application pour notre IA. 
 
-\noindent Il vient tout d'abord récupérer l'ID et le texte de chaque phrase. \\
+\subsection{preprocessing}
+Cette méthode prend comme argument le directory qui contient les images avec la structure décrite dans la partie \textit{Description des données} afin d'effectuer le pré-traitement. \\
 
-\noindent Ensuite il récupère chaque couple E\#C et transforme le tout en un vecteur binaire ayant des 1 uniquement aux colonnes correspondant au couple comme sur l'image ci-dessus encadré en rouge. Étant donné le nombre de couples possible, il s'agit d'une vecteur à 197 dimensions comportant majoritairement des 0.\\
+Dans un premier temps cette méthode va donc créer un répertoire pour les données d'entrainement, puis un autre pour les données de validation en ce basant sur le répertoire donné en argument.\\
 
-\noindent Finalement, le programme récupérera la polarité de chaque couple E\#C et conclue une polarité générale de la phrase selon les règles suivantes :
-\begin{enumerate}
-\item \textbf{\small{neutral + X = X, X une polarité. }}
-\item \textbf{\small{positive + negative = mixed.}}
-\item \textbf{\small{mixed + X = mixed, X une polarité.}}
-\end{enumerate}
+Ensuite, deux \textit{ImageDataGenerator} vont être créer avec une mise à l'échelle de 1/255. En effet il est beaucoup plus simple pour l'IA de travailler avec des données entre 0 et 1 que 0 et 255 concernant le RGB de chaque pixels. Le premier ImageDataGenerator va servir pour les données d'entrainement et le deuxième pour la validation.\\
 
-\noindent Cette polarité général est ensuite convertie en entier:
+Finalement deux générateurs vont être créés pour les deux parties avec comme taille voulue 150x150 pixels étant donnée que cela correspond à la taille des images dans le jeu de données. Le \textit{batch\_size} est de \textbf{32} et le \textit{class\_mode} est en \textbf{binary} étant donné que nous avons comme résultat un vecteur constitué de 0 et de 1.\\
 
-\noindent \textbf{0=negative, 1=positive, 2=neutral, 3=mixed.}
+Les générateurs d'entrainement et validation ainsi créés vont être retourné par la méthodes afin de les utiliser dans les autres. 
 
 \subsection{PreProcessing.py}
 Ce fichier permet d'effectuer un pré traitement sur les textes du premier data frame afin de facilité le travail d'apprentissage de l'IA. Il s'appuie notamment sur la librairie \textit{nltk}.\\

@@ -8,7 +8,7 @@
 \contentsline {subsection}{\numberline {3.2}Modification des jeux de donn\IeC {\'e}es}{3}{subsection.3.2}% 
 \contentsline {paragraph}{}{3}{paragraph*.1}% 
 \contentsline {section}{\numberline {4}Impl\IeC {\'e}mentation de l'algorithme}{4}{section.4}% 
-\contentsline {subsection}{\numberline {4.1}DataInitializer.py}{4}{subsection.4.1}% 
+\contentsline {subsection}{\numberline {4.1}preprocessing}{4}{subsection.4.1}% 
 \contentsline {subsection}{\numberline {4.2}PreProcessing.py}{5}{subsection.4.2}% 
 \contentsline {subsection}{\numberline {4.3}Classify.py}{5}{subsection.4.3}% 
 \contentsline {subsection}{\numberline {4.4}PlotResult.py}{6}{subsection.4.4}% 
