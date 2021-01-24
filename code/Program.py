@@ -27,7 +27,8 @@ def main():
     predict(models,"./image/seg_test/seg_test/glacier/20087.jpg",'probabilities')
     y_test,real = reportTestData(models)
     reportText(y_test,real,LABEL)
-    reportGraphe(y_test,real,LABEL)
+    #reportGraphe(y_test,real,LABEL)
+    reportRepartition(y_test,real,LABEL)
 
 def autoTrain():
     epoch = 60

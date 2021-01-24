@@ -65,3 +65,36 @@ def reportGraphe(y_pred,realpred,label):
     plt.subplots_adjust(left=0.05, bottom=0.2, right=0.86, top=0.95, wspace=0.2, hspace=0.2)
     plt.savefig("class_plot.png")
     plt.show()
+
+def reportRepartition(y_pred,realpred,label):
+    confusion = confusion_matrix(realpred, y_pred)
+    allCircle = []
+    i = 0
+    for entity in label:
+        total = sum(confusion[i])
+        # on fait un pourcentage sur le total
+        allCircle.append([elt*100/total for elt in confusion[i]])
+        print(allCircle[i])
+        i+=1
+
+    fig, axArray = plt.subplots(3,2,figsize=(20,20))
+    i = 0
+    for line in axArray:
+        for ax in line:
+            legend=label[:]
+            for numLab in range(len(legend)):
+                legend[numLab] = legend[numLab] + " " + str(round(allCircle[i][numLab],2))+"% ("+ str(confusion[i][numLab]) + " img)"
+            wedges, texts = ax.pie(allCircle[i])
+            ax.legend(wedges, legend,
+                    title="class - total : "+str(sum(confusion[i]))+" img",
+                    loc="center left",
+                    bbox_to_anchor=(1, 0, 0.5, 1))
+
+            #plt.setp(autotexts, size=8, weight="bold")
+
+            ax.set_title(label[i])
+            i+=1
+    plt.savefig("pie_diagram.png")
+    plt.show()
+
+    
