@@ -98,6 +98,7 @@ Celles-ci sont au nombre de 6, chacune correspond à une catégorie de paysage o
  \textit{Sea} représente les décors marins en général, que ce soit une plage, la mer avec ou sans terre ferme, ou bien même un décor sous-marin, tout cela va dans cette catégorie. \\
 Enfin la catégorie \textit{Street} met en avant une rue, qui peut donc facilement se rapprocher de \textit{building} étant donnée la présence quasi-permanente de bâtiments dans une rue, on y trouve souvent des passant et des voitures.  
 
+\newpage
 \section{Description des données}
 
 \subsection{Le jeu de données}
@@ -155,9 +156,9 @@ Un autre type de problème sont les images hors contexte donc difficilement clas
 \end{figure}
 Certaines images vont donc automatiquement faire descendre la précision car même pour un nous il est difficile de classifier comme ce qui est attendue. Néanmoins, La plupart des autres données sont correct et vont nous permettre de faire une bonne classification.
 
-
+\newpage
 \section{Implémentation de l'algorithme}
-Notre algorithme est développé en python. Il se trouve dans le fichier \textit{Program.py} et possède 4 méthodes majeures qui ont permis de répondre aux attentes du sujet. Nous allons donc présenter chacune de ces méthodes avec un peu plus de détails. \\
+Notre algorithme est développé en python. Il se trouve dans le fichier \textit{Program.py} et possède 3 méthodes majeures qui ont permis de répondre aux attentes du sujet. Nous allons donc présenter chacune de ces méthodes avec un peu plus de détails. \\
 
 La réussite de ce sujet est grandement due au livre \textbf{L'APPRENTISSAGE PROFOND AVEC PYTHON} de \textit{François CHOLLET}. La lecture de son travail nous à permis un apprentissage rapide du fonctionnement des réseaux neuronal convolutif ainsi que leur mise en application pour notre IA. 
 
@@ -172,60 +173,62 @@ Finalement deux générateurs vont être créés pour les deux parties avec comm
 
 Les générateurs d'entrainement et validation ainsi créés vont être retourné par la méthodes afin de les utiliser dans les autres. 
 
-\subsection{PreProcessing.py}
-Ce fichier permet d'effectuer un pré traitement sur les textes du premier data frame afin de facilité le travail d'apprentissage de l'IA. Il s'appuie notamment sur la librairie \textit{nltk}.\\
+\subsection{trainModel}
+Cette méthode à pour but de créer et entrainer le modèle. Elle prend en argument les deux générateurs créés à la partie précédente, ainsi que des paramètres propres à l’entrainement de l’ia comme le nombre d’epoch, le nombre d’étape par epoch ainsi que le chemin d’enregistrement du modèle qui sera créé.\\
 
-\noindent Tout d'abord le texte va être mit en minuscule afin de ne pas différencier des mots n'ayant pas la même casse. Ensuite chacun de ses mots (y compris la ponctuation) va être transformé en \textbf{« token »}. De ces tokens sera retiré la ponctuation ainsi que ce que l'on appelle les \textbf{STOPWORDS}. Ce sont les mots n'ayant pas de grande valeurs syntaxique comme les déterminants, adjectifs possessifs, conjonctions de coordination, verbes communs (être, avoir)...\\
-
-\noindent L'étape suivante consiste à effectuer une \textbf{lemmatisation} sur chacun des tokens. La lemmatisation est un traitement lexical qui consiste à appliquer aux verbes, substantifs, adjectifs... un codage renvoyant à leur entrée lexicale commune, leur « forme canonique ».\\\\
-
-\noindent \textit{Exemple :}\\
-Les / la\\
-étoiles /étoile\\
-claires / clair\\
-luisent / luire\\
-noire / noir\\
-
-\noindent Voici une image des phrases du dataframe précédent où celles-ci ont été pré-traitées : 
-\begin{figure}[H]
-    \begin{center}
-        \includegraphics[scale=0.62]{3808.jpg}
-    \end{center}
-\caption{\small{Phrases pré-traitées}}
-\end{figure}
-
-\subsection{Classify.py}
-Ce fichier a pour fonction de créer un classificateur pour chaque classes qui possèdent des données pour s'entrainer. L'intégralité de ce fichier utilise principalement la librairie \textit{sklearn} qui est une librairie complète pour l'apprentissage d'une IA.\\
-
-\noindent \textit{Remarque : } 
-Comme dit précédemment , certaines classes n'étant pas existante dans les données d'entrainement (ET dans les données de test), elles n'ont donc pas de classificateur attitré.\\
-
-La première opération à faire pour pouvoir créer un classificateur, est de transformer les phrases en vecteurs. Pour cela, nous avons utilisé \textbf{TfidfVectorizer} de la librairie sklearn. Au niveau des paramètres, nous avons décidé d'utiliser\textbf{ la norme "l2"} et d'utiliser des \textbf{ngram entre 1 et 8}. Une fois créé nous avons entrainé ce vectoriseur avec les commentaires de notre jeu de d'entrainement.\\
-
-Ensuite, nous pouvons commencer la classification. Pour celle-ci nous avons décidé d'utiliser la méthode \textbf{one-versus-rest} (« une contre le reste »). Cette méthode consiste à traiter chaque classe indépendamment des autre. Chaque classe représente ici un de nos couple E\#C.\\
-
-Dû au peu de données présente pour certaine classe, et l'effort pour en ajouter d'autre étant trop élevé, nous avons eu recourt à un algorithme d'échantillonnage pour augmenter les classes minoritaires. Cet algorithme n'est autre que \textbf{ADASYN} (Adaptive Synthetic). A partir des données existantes (au moins 5 ici), l'algorithme va en créer d'autre en utilisant le principe des \textit{« K plus proche voisins »}. L'image ci-dessous montre l'efficacité d'ADASYN.\\
+\subsubsection{Description du modèle}
+La construction de notre modèle actuel est comme ci-dessous : 
 
 \begin{figure}[H]
     \begin{center}
-        \includegraphics[scale=0.62]{3808.jpg}
+        \includegraphics[scale=0.62]{./img/model_sum.png}
     \end{center}
-\caption{\small{L'algorithme ADASYN}}
+\caption{\small{Résumé du model}}
 \end{figure}
 
-Après avoir fait cela, il nous reste plus qu'à entrainer chacun des classificateurs. Nous avons utiliser donc utilisé \textbf{OneVsRestClassifier} avec comme\textbf{ solver "sag"}, un \textbf{poids équilibré entre chaque classe} et un nombre d'\textbf{itération maximum de 1000}. Afin de pouvoir réutiliser ces classificateurs pour notamment évaluer une phrase à la volée, nous les stockons dans un dictionnaire ayant pour clé la catégorie et pour valeur le classificateur de cette catégorie.\\
+La partie principale de notre modèle se constitue donc de plusieurs blocs composés de la manière suivante : un \textbf{2D convolution layer}  suivi d'un \textbf{Max pooling operation for 2D spatial data} et se terminant par un \textbf{dropout layer}. A la fin de ces paternes un \textbf{flatten layer} est mit en place suivi d'un nouveau \textbf{dropout}. Notre modèle se termine enfin par deux \textbf{dense layer} avec un autre \textbf{dropout} entre eux \\ 
 
-La dernière fonction de cette classe est la prédiction un dataframe test. Pour ce faire, à l'aide du vectoriseur et des classificateurs, il nous suffit de pré-traiter et vectoriser chaque phrases et d'appeler pour chacune l'intégralité des classificateurs stockés dans le dictionnaire pour prédire à quelles classes (ou couple E\#C) appartient chaque commentaire.
+Les convolution layers utilisent tous de strides de taille 3x3 et ont pour fonction d'activation \textit{Rectified Linear Unit}. Le première couche utilise comme input\_shape des images RGB de taille 150x150 afin de s'adapter à nos données.\\
+Les maxpooling layers ont quant à eux un strides de taille 2x2.\\
+Tout les dropout mis en place dans ce modèle ont comme paramètre 20\% des données abandonnées. Ceci afin de limité l'overfitting de nos données. \\
+Le premier dense layer prend comme paramètre 512 dimensions avec comme fonction d'activation \textit{Rectified Linear Unit} et utilise également un \textit{kernel\_regularizer}. Le deuxième quant à lui possède 6 dimensions, étant donné que l'on souhaite 6 classes et utilise \textit{softmax} comme fonction d'activation. \\
 
-\subsection{PlotResult.py}
-Ce fichier utilise la libraire \textit{matplotlib} de python. Il permet de mettre en place la représentation graphiques des résultats obtenus. Les données sont récupérées lors de la classification du fichier précédent, puis sont misent dans des diagrammes en barre. Cela permet d'avoir une vision générale mais rapide des différents score évalués. En effet il y a beaucoup de classes différentes et un rapport de classification détaillés pour chacune d'elle ne serais pas pertinent.
+La compilation du modèle se fait avec un optimiser \textit{adam} et une fonction de perte \textit{categorical\_crossentropy} et se focalise sur la précision du modèle. \\
 
-\begin{figure*}[t]
+Finalement nous entrainons le modèle avec les paramètres donnés précédemment et le stockons dans history afin d'afficher sur un graphe l'évolution de la précision au cours de l'entrainement. Nous sauvegardons au passage le modèle dans le chemin donné en argument. 
+
+\subsubsection{Evolution du modèle}
+Grâce au nombreux exemples du livre qui nous à servis de base, notre premier modèle possédait déjà une précision aux alentours de 80\% pour les données de validation et 98\% pour celle d'entrainement. Ceci était déjà un très bon résultat mais notre modèle souffrait donc d'\textbf{overfitting}.\\
+
+Nous avons remédier au problèmes en utilisant des dropout layers afin que notre modèle ne se focalise pas trop sur ses données d'entrainement uniquement. Nous avons choisi d'abandonner 20\% de nos résultat après chaque paternes conv2D/maxpooling. On peut ainsi constater la différents de précisions des données de validation dans les graphiques suivant : 
+
+\begin{figure}[H]
     \begin{center}
-        \includegraphics[width=1.15\textwidth]{3808.jpg}
+        \includegraphics[scale=0.4]{./img/figure_3.png}
     \end{center}
-    \caption{F1-score de chaque classe pour 0 et 1}
-\end{figure*}
+\caption{\small{Précision sans dropout}}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[scale=0.4]{./img/figure_1.png}
+    \end{center}
+\caption{\small{Précision avec dropout}}
+\end{figure}
+
+On voit alors très clairement que la précision de validation est beaucoup plus proche de celle d'entrainement même si celle-ci à donc tendance à être plus basse, s'expliquant par l'abandon de 20\% des résultats obtenus. 
+
+\subsection{predict et méthodes graphiques}
+Cette méthode correspond aux attentes du sujet pour afficher les prédictions de notre modèle avec le mode attendu qu'il prend donc en argument. Il prend également pour paramètre le modèle entrainé ainsi que le chemin de fichier de l'image à prédire. 
+
+Enfin, pour mettre sous forme de diagramme ou de graphiques les résultats obtenus qui seront présentés dans la section suivante, nous nous sommes appuyer sur la librairie matplotlib. Nous avons donc mit en place différentes méthode pour ceci, ainsi qu'un autre programme appelé \textit{report.py} pour l'affichage graphique de la matrice de confusion. 
+
+\subsection{Temps d'apprentissage du modèle}
+Le temps d'apprentissage du modèle dépend bien évidemment du nombre d'epoch ainsi que du nombre d'étapes par epoch choisi. Notre modèle final se base sur 60 epoch de 430 étapes chacune. Bien évidemment lors de nos test d'améliorations, nous ne mettions que 30 epoch de 120 étapes afin de voir rapidement les résultats. \\
+
+Sur le pc le plus performant du groupe, le modèle final prend environ 15-20 min pour s'entrainer et lors de nos test environ 2-3 minutes. Cela viens du fait de l'utilisation de l'installation des dll utilisant la carte graphique et cœurs cuda pour l'apprentissage de l'IA. Néanmoins ce temps dépend bien sur fortement du matériel utilisé et de sa configuration.  
+
+
 \newpage
 \section{Résultat obtenus}
 Il est à noter que les résultats peuvent être légèrement différent à chaque appel du programme ainsi les graphiques qui vont suivre ne sont pas forcément absolus. 
@@ -300,36 +303,37 @@ Finalement, la polarité \textit{mixed} possède le score le plus bas car d'une 
 
 \newpage
 \section{Les améliorations possibles}
-Dans cette nous allons voir ce que nous aurions pu améliorer dans notre projet.
+Globalement, pour nous ce projet n'a pas tant d'amélioration à faire que cela. Les nombres de données pour construire le modèle est largement suffisant, il n'y a donc pas eu à recourir à des transformations d'image pour lutter contre un manque de données. Elles sont plutôt diverses et équilibrées, il ne faut donc pas mettre en place de système de pondération pour les classes.\\
 
-\subsection{Les classe}
-Le plus gros problème de notre sujet sont les classes qui ont été choisies pour le jeu de données, il y en a beaucoup trop (126) dont la plupart qui sont similaire. Avec plus de temps, il aurais été préférable de refaire la plupart des classes sans garder la forme \textit{entité\#categorie}. Car pour des phrase comme \textit{"L'ordinateur est rapide"}, cela veux dire que l'on parle de plusieurs entités comme DISPLAY, CPU, LAPTOP, GRAPHICS, SOFTWARE, ... et pour chacune, des catégories GENERAL et OPÉRATION PERFORMANCE.\\
-Pour corriger cela, le mieux aurait été de faire moins de classe mais avec des spécificité plus générale (comme \textit{"composant", "service"..}) ce qui aurais permit de mieux classifier et d'être plus précis.
+\subsection{Travail sur le jeu de données}
+Comme expliqué précédemment, le jeu de données met certaines images dans des classes qui n'ont pas toujours un réel rapport ou alors en met d'autres quasiment identiques dans des classes différentes. Résoudre ce problème en supprimant ou déplaçant toutes ces images problématiques dans les bonnes catégories permettrait alors à l'IA de mieux savoir différents ces différentes images et ainsi obtenir une meilleure précision. 
 
-\subsection{Le jeu de données}
-La deuxième amélioration majeure que l'on aurais pu faire aurait été d'ajouter plus de données à notre jeu d'entrainement ou bien même avoir un jeu de données plus conséquent et plus orienté dans la conception choisie avec les différents couples. Cet élément est ce qui nous à poser le plus de problème dans le projet.
-
-\subsection{Les marques et modèles}
-Quand on parle de matériels informatique, il arrive souvent de parler d'un modèle spécifique. Pour les processeur le vocabulaire CPU ou processeur ne vas pas toujours être employé, l'utilisateur utilisera plutôt les mots \textit{"i7"} ou \textit{"intel"} ou encore\textit{"ryzen"} qui sont des modèle des processeurs. Cela se retrouve sur plusieurs entités différentes. Il aurait été possible de changer les Tokens des modèles spécifiques lors de leur récupération par un mot plus général, si nous reprenons l'exemple il serait possible de tout remplacer par le mot \textit{"processeur"}. Cela aurait surement amélioré l'efficacité de l'IA dans sa classification.
-
-\subsection{La polarité}
-Avec le choix de faire une polarité générale par phrase, il y a un travail assez intéressant qui s'est retrouvé écarté. En effet, il aurait été intéressant d'essayer de faire une polarité pour chaque couple trouvées comme demandé dans le SemEval. Pour cela, il aurais fallu réussir à isoler le morceau de phrase qui a permit de détecter la classe. Puis à partir de ce sous-ensemble, faire de nouveau une classification sur la polarité. Par manque de temps et d'expérience, cette isolation de sous-ensemble par couple fut trop complexe, il aurai fallu partir d'une IA avec une classification déjà presque parfaite afin de ne pas sélectionner une sous-ensemble incohérent. Ce qui n'était pas notre cas. 
+\subsection{Travail sur le modèle}
+Bien évidemment, notre modèle est loin d'être parfait. Par manque de temps, nous n'avons pas expérimenter toutes les possibilités et d'autre méthodes d'apprentissage de classifications d'image existent. Notre précision (~87\%)  reste néanmoins plus que correcte, mais il aurait peut être été possible d'atteindre 90\%. 
 
 \end{multicols}
 \newpage
 \section{Conclusion}
-La mise en place de ce projet fut un challenge. En effet, il nous a fallu construire nous même chaque couple entité-catégorie et utiliser la classification \textit{one-vs-rest} que nous ne maitrisions pas du tout.\\
-La partie la plus simple fut de pré-traiter le texte et de récupérer les données depuis le document XML et d'en faire des diagrammes. Sûrement dû à nos connaissances acquises au court de notre cursus et de cette matière. \\
-Une fois la classification mise en place, nous avons heurter le problème du manque de données qui dans un premier temps ne fût pas corriger par l'algorithme \textit{ADASYN,} car le jeu données étant vraiment trop pauvre pour certaine classes celui-ci en créait de nouvelles un peu diverse (l'IA répondait toujours non aux tests pour les classes concernées). Il nous a donc fallu ajouter énormément de données ce qui est dommage car nous n'en avons tiré aucun apprentissage.\\
-Plus généralement, ce projet nous aura permit de nous familiariser avec les librairies \textit{sklearn} et \textit{nltk}, d'apprendre de nouvelles façon de classifier lorsque plusieurs classes peuvent apparaitre pour un même cas, mais également de solutionner le problème du dés-équilibrage des classes et des valeurs et finalement de manipuler l'apprentissage d'une IA avec des données textuelles et leur pré-traitement.
+Pour conclure sur notre travail sur le sujet donné, l'apprentissage et la construction du modèle de fût pas le plus difficile à mettre en place et obtenir rapidement une bonne précision. \\
+Cela s'explique par le très bon livre donné en référence de François CHOLLET, celui-ci contenait toutes les informations nécessaire à la réussite du sujet mais aussi à l'apprentissage profond neuronal en général.  Certaines solutions pour lutter contre l'overfitting y était même présente. Il nous a ainsi fallu compléter toutes ces informations par quelques recherches supplémentaire sur internet afin d'obtenir notre résultat final.\\
+La classification d'image étant quelques choses que nous n'avions encore jamais abordé, nous avons donc pu constater que ce n'est pas excessivement compliqué. A présent, nous avons le savoir minimal nécessaire afin d'étendre la classification d'image à n'importe quels problèmes pouvant être assimilé à ce projet, la seule différences étant le jeu de données et les catégories différentes. 
+
+\section{Membres du groupe}
+\subsection{Yann MARTIN D'ESCRIENNE}
+Ce projet m'a beaucoup apporté. Il est pour moi une bonne finalisation de tout les TPs que nous avons pu faire en Neural Network and Learning. Le confort du bon jeu de données m'a permis de mieux m'investir dans le projet, malgré quelques surprises dans certaines catégories.\\
+
+Nous avons travaillé en groupe quant à l'implémentation du modèle mais également dans tout le projet en général, avançant ensemble de façon synchrone sur le projet. J'ai majoritairement travaillé sur la phase de preprocessing et de prédiction. J'ai également recherché de nombreuses informations dans le livre de François CHOLLET afin de pouvoir répondre à toutes nos questions et attentes du sujet. 
+Je me suis occupé de rédiger les parties 1,2,4,6 et 7 du rapport. 
+
+\subsection{Yohann TOGNETTI}
 
 \section{Références}
 \begin{itemize}
-\item Top Rated in Laptop Computers  :\\ \url{https://www.amazon.com/pcr/Top-Rated-Laptop-Computers-Reviews/565108}%
-\item The “Imbalanced classification problem” :\\ \url{https://medium.com/@bluedme_tech/comment-traiter-les-probl%C3%A8mes-de-classification-d%C3%A9s%C3%A9quilibr%C3%A9e-en-machine-learning-8c3bc95ca25b}%
-\item Deep dive into multi-label classification :\\ \url{https://towardsdatascience.com/journey-to-the-center-of-multi-label-classification-384c40229bff}%
-\item Tutoriel TAL pour les débutants :\\ \url{https://www.actuia.com/contribution/victorbigand/tutoriel-tal-pour-les-debutants-classification-de-texte/}%
-\item SemEval-2015 Task 12 :\\ \url{https://alt.qcri.org/semeval2015/task12/index.php?id=data-and-tools}%
+\item Deep Learning with Python by François Chollet 
+\item TensorFlow Conv2D Layers: A Practical Guide :\\ \url{https://missinglink.ai/guides/tensorflow/tensorflow-conv2d-layers-practical-guide/}%
+\item Keras documentation :\\ \url{https://keras.io/api/layers/}%
+\item Overfit and underfit  |  TensorFlow Core :\\ \url{https://www.tensorflow.org/tutorials/keras/overfit_and_underfit#strategies_to_prevent_overfitting}%
+\item Image classification  |  TensorFlow Core :\\ \url{https://www.tensorflow.org/tutorials/images/classification}%
 \item WIKIPEDIA FR :\\ \url{https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal}%
 \end{itemize}
 

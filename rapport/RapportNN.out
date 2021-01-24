@@ -7,18 +7,21 @@
 \BOOKMARK [2][-]{subsection.3.2}{Des donn\351es pas forcement bien classifi\351e}{section.3}% 7
 \BOOKMARK [1][-]{section.4}{Impl\351mentation de l'algorithme}{}% 8
 \BOOKMARK [2][-]{subsection.4.1}{preprocessing}{section.4}% 9
-\BOOKMARK [2][-]{subsection.4.2}{PreProcessing.py}{section.4}% 10
-\BOOKMARK [2][-]{subsection.4.3}{Classify.py}{section.4}% 11
-\BOOKMARK [2][-]{subsection.4.4}{PlotResult.py}{section.4}% 12
-\BOOKMARK [1][-]{section.5}{R\351sultat obtenus}{}% 13
-\BOOKMARK [2][-]{subsection.5.1}{R\351sultat g\351n\351ral}{section.5}% 14
-\BOOKMARK [2][-]{subsection.5.2}{R\351sultat pour la valeur "1"}{section.5}% 15
-\BOOKMARK [2][-]{subsection.5.3}{R\351sultat par entit\351s}{section.5}% 16
-\BOOKMARK [2][-]{subsection.5.4}{R\351sultat de la polarit\351}{section.5}% 17
-\BOOKMARK [1][-]{section.6}{Les am\351liorations possibles}{}% 18
-\BOOKMARK [2][-]{subsection.6.1}{Les classe}{section.6}% 19
-\BOOKMARK [2][-]{subsection.6.2}{Le jeu de donn\351es}{section.6}% 20
-\BOOKMARK [2][-]{subsection.6.3}{Les marques et mod\350les}{section.6}% 21
-\BOOKMARK [2][-]{subsection.6.4}{La polarit\351}{section.6}% 22
+\BOOKMARK [2][-]{subsection.4.2}{trainModel}{section.4}% 10
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Description du mod\350le}{subsection.4.2}% 11
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Evolution du mod\350le}{subsection.4.2}% 12
+\BOOKMARK [2][-]{subsection.4.3}{predict et m\351thodes graphiques}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.4}{Temps d'apprentissage du mod\350le}{section.4}% 14
+\BOOKMARK [1][-]{section.5}{R\351sultat obtenus}{}% 15
+\BOOKMARK [2][-]{subsection.5.1}{R\351sultat g\351n\351ral}{section.5}% 16
+\BOOKMARK [2][-]{subsection.5.2}{R\351sultat pour la valeur "1"}{section.5}% 17
+\BOOKMARK [2][-]{subsection.5.3}{R\351sultat par entit\351s}{section.5}% 18
+\BOOKMARK [2][-]{subsection.5.4}{R\351sultat de la polarit\351}{section.5}% 19
+\BOOKMARK [1][-]{section.6}{Les am\351liorations possibles}{}% 20
+\BOOKMARK [2][-]{subsection.6.1}{Travail sur le jeu de donn\351es}{section.6}% 21
+\BOOKMARK [2][-]{subsection.6.2}{Travail sur le mod\350le}{section.6}% 22
 \BOOKMARK [1][-]{section.7}{Conclusion}{}% 23
-\BOOKMARK [1][-]{section.8}{R\351f\351rences}{}% 24
+\BOOKMARK [1][-]{section.8}{Membres du groupe}{}% 24
+\BOOKMARK [2][-]{subsection.8.1}{Yann MARTIN D'ESCRIENNE}{section.8}% 25
+\BOOKMARK [2][-]{subsection.8.2}{Yohann TOGNETTI}{section.8}% 26
+\BOOKMARK [1][-]{section.9}{R\351f\351rences}{}% 27
