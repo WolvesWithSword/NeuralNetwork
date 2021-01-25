@@ -166,12 +166,12 @@ Même pour nous humains, il n'est pas possible d'attribuer la catégorie Glacier
 Certaines images vont donc automatiquement faire descendre la précision car l'IA ne sait pas quel paterne similaire aux images précédentes elle doit retrouver ici. Néanmoins, La plupart des autres images sont correctes et vont nous permettre de faire une bonne classification malgré ces quelques tâches dans le jeu de données.
 
 \section{Implémentation de l'algorithme}
-Notre algorithme est développé en python. Il se trouve dans le fichier \textit{Program.py} et possède 3 méthodes majeures qui ont permis de répondre aux attentes du sujet. Nous allons donc présenter chacune de ces méthodes avec un peu plus de détails. \\
+Notre algorithme est développé en python. Il se trouve dans le fichier \textit{Program.py} et possède 3 programmes majeurs qui ont permis de répondre aux attentes du sujet. Nous allons donc présenter chacune de ces programme avec un peu plus de détails. \\
 
 La réussite de ce sujet est grandement due au livre \textbf{L'APPRENTISSAGE PROFOND AVEC PYTHON} de \textit{François CHOLLET}. La lecture de son travail nous a permis un apprentissage rapide du fonctionnement des réseaux neuronal convolutif ainsi que leur mise en application pour notre IA. 
 
 \subsection{preprocessing}
-Cette méthode prend comme argument le directory qui contient les images avec la structure décrite dans la partie \textit{Description des données} afin d'effectuer le pré-traitement. \\
+Cette méthode du programme PRE.py prend comme argument le directory qui contient les images avec la structure décrite dans la partie \textit{Description des données} afin d'effectuer le pré-traitement. \\
 
 Dans un premier temps cette méthode va donc créer un répertoire pour les données d'entrainement, puis un autre pour les données de validation en se basant sur le répertoire donné en argument.\\
 
@@ -182,7 +182,7 @@ Finalement deux générateurs vont être créés pour les deux parties avec comm
 Les générateurs d'entrainement et validation ainsi créés vont être retournés par la méthode afin de les utiliser dans les autres. 
 
 \subsection{trainModel}
-Cette méthode a pour but de créer et entrainer le modèle. Elle prend en argument les deux générateurs créés à la partie précédente, ainsi que des paramètres propres à l’entrainement de l’ia comme le nombre d’epoch, le nombre d’étapes par epoch ainsi que le chemin d’enregistrement du modèle qui sera créé.\\
+Cette méthode du programme R.py a pour but de créer et entrainer le modèle. Elle prend en argument les deux générateurs créés à la partie précédente, ainsi que des paramètres propres à l’entrainement de l’ia comme le nombre d’epoch, le nombre d’étapes par epoch ainsi que le chemin d’enregistrement du modèle qui sera créé.\\
 
 \subsubsection{Description du modèle}
 La construction de notre modèle actuel est comme ci-dessous : 
@@ -227,9 +227,9 @@ Nous avons remédié au problèmes en utilisant des dropout layers afin que notr
 On voit alors très clairement que la précision de validation est beaucoup plus proche de celle d'entrainement même si celle-ci a donc tendance à être plus basse, s'expliquant par l'abandon de 20\% des résultats obtenus. 
 
 \subsection{predict et méthodes graphiques}
-Cette méthode correspond aux attentes du sujet pour afficher les prédictions de notre modèle avec le mode attendu qu'il prend donc en argument. Il prend également pour paramètre le modèle entrainé ainsi que le chemin de fichier de l'image à prédire. 
+Cette méthode du programme R.py correspond aux attentes du sujet pour afficher les prédictions de notre modèle avec le mode attendu qu'il prend donc en argument. Il prend également pour paramètre le modèle entrainé ainsi que le chemin de fichier de l'image à prédire. 
 
-Enfin, pour mettre sous forme de diagramme ou de graphiques les résultats obtenus qui seront présentés dans la section suivante, nous nous sommes appuyé sur la librairie matplotlib. Nous avons donc mis en place différentes méthodes pour ceci, ainsi qu'un autre programme appelé \textit{report.py} pour l'affichage graphique de la matrice de confusion. 
+Enfin, pour mettre sous forme de diagramme ou de graphiques les résultats obtenus qui seront présentés dans la section suivante, nous nous sommes appuyé sur la librairie matplotlib. Nous avons donc mis en place différentes méthodes pour ceci dans le programme appelé \textit{FIG.py} pour l'affichage graphique de la matrice de confusion. 
 
 \subsection{Temps d'apprentissage du modèle}
 Le temps d'apprentissage du modèle dépend bien évidemment du nombre d'epoch ainsi que du nombre d'étapes par epoch choisi. Notre modèle final se base sur 60 epochs de 430 étapes chacune. Bien évidemment lors de nos tests d'améliorations, nous ne mettions que 30 epochs de 120 étapes afin de voir rapidement les résultats. \\
