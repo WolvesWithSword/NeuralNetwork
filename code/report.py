@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 
-
+#gestion des label pour le graphique en bar
 def autolabel(ax,rects,fontSize):
     #Attach a text label above each bar in *rects*, displaying its height.
     for rect in rects: 
@@ -13,13 +13,14 @@ def autolabel(ax,rects,fontSize):
                 textcoords="offset points",
                 ha='center', va='bottom', fontsize=fontSize, rotation=90)
 
-
+#permet de faire un report textuel des données (matrice de confusion)
 def reportText(y_pred,realpred,label):
     print("Matrice de confusion :")
     print(confusion_matrix(realpred, y_pred))
     print("report :")
     print(classification_report(realpred, y_pred, target_names=label))
 
+#permet de créer le graphe avec le score pour chaque classe
 def reportGraphe(y_pred,realpred,label):
     report = classification_report(realpred, y_pred, target_names=label,output_dict=True)
     precision=[]
@@ -66,6 +67,7 @@ def reportGraphe(y_pred,realpred,label):
     plt.savefig("class_plot.png")
     plt.show()
 
+#permet de créer le graphe du recall des classe
 def reportRepartition(y_pred,realpred,label):
     confusion = confusion_matrix(realpred, y_pred)
     allCircle = []
