@@ -16,30 +16,44 @@ from tensorflow.python.keras.applications.densenet import decode_predictions
 from tensorflow.python.ops.metrics_impl import mean_per_class_accuracy
 from report import *
 
-
+# emplacement du fichier d'image
 img_dir = "./image/"
+#label de classe
 LABEL = ["buildings","forest","glacier","mountain","sea","street"]
 
-def main():
-    #autoTrain()
-    models = loadModel("model/best.h5")
+# Methode principale qui permet de créer le model et l'executer
+#autoTrain permet de dire si l'on veux train le modele avant d'executer les test
+def main(autotrain = True):
+
+    #permet de train le modele (mettre en commentaire si le modele est train)
+    if(autotrain):
+        autoTrain()
+
+    #permet de charger le model
+    models = loadModel("model/model.h5")
     models.summary()
-    predict(models,"./image/seg_test/seg_test/glacier/20087.jpg",'probabilities')
+
+    #permet de predict une image et d'avoir les information demander
+    predict(models,img_dir+"seg_test/seg_test/glacier/20087.jpg",'probabilities')
+
+    #report sur le jeu de test
     y_test,real = reportTestData(models)
     reportText(y_test,real,LABEL)
-    #reportGraphe(y_test,real,LABEL)
+    reportGraphe(y_test,real,LABEL)
     reportRepartition(y_test,real,LABEL)
 
-def autoTrain():
-    epoch = 60
-    step_by_epoch = 430 
+#Permet de train et d'afficher les courbe resultant de l'entrainement
+def autoTrain(epoch = 60, step_by_epoch = 430):
+
     (train_gen,validation_gen) = preprocessing(img_dir)
-    history = trainModel(train_gen, validation_gen, epoch, step_by_epoch, "model/best.h5")
+    history = trainModel(train_gen, validation_gen, epoch, step_by_epoch, "model/model.h5")
     plotTrain(history,epoch)
 
+#permet de charger le modele
 def loadModel(path):
     return load_model(path)
 
+#permet de predire une image
 def predict(models,path,mode='category'):
     np.set_printoptions(suppress=True)
     #label list
@@ -70,7 +84,7 @@ def predict(models,path,mode='category'):
     if(mode == "category"):
         print(label[idx],"=",max_prob,"%")
 
-
+#permet de faire le preprocessing des image
 def preprocessing(img_dirct):
     tf.config.experimental.enable_mlir_graph_optimization
     train_dir = os.path.join(img_dirct, 'seg_train/seg_train')
@@ -94,6 +108,7 @@ def preprocessing(img_dirct):
 
     return (train_generator,validation_generator)
 
+#permet d'entrainer le modele
 def trainModel(train_generator,validation_generator,epochs,steps_per_epoch,path='model/first.h5'):
     
     model = models.Sequential()
@@ -141,6 +156,7 @@ def trainModel(train_generator,validation_generator,epochs,steps_per_epoch,path=
     model.save(path)
     return history
 
+# permet de créer le graphe de l'entrainement du modele
 def plotTrain(history,epochs):
     acc = history.history['accuracy']
     val_acc = history.history['val_accuracy']
@@ -166,7 +182,8 @@ def plotTrain(history,epochs):
 
 
 
-
+# permet de créer les liste des prediction du jeu de test
+# ainsi que les réel 
 def reportTestData(model):
     validation_dir = os.path.join(img_dir, 'seg_test/seg_test')
     test_datagen = ImageDataGenerator(rescale=1./255)
@@ -218,6 +235,6 @@ def reportTestData(model):
 #     print(len(input_arr[0][0]))
 #     print(input_arr.shape)
     
-
+#permet de lancer le programme
 if __name__ == "__main__":
-    main()
+    main(False)
