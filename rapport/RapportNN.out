@@ -4,7 +4,7 @@
 \BOOKMARK [2][-]{subsection.2.2}{Les cat\351gories}{section.2}% 4
 \BOOKMARK [1][-]{section.3}{Description des donn\351es}{}% 5
 \BOOKMARK [2][-]{subsection.3.1}{Le jeu de donn\351es}{section.3}% 6
-\BOOKMARK [2][-]{subsection.3.2}{Des donn\351es pas forcement bien classifi\351e}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{Des donn\351es mal classifi\351es}{section.3}% 7
 \BOOKMARK [1][-]{section.4}{Impl\351mentation de l'algorithme}{}% 8
 \BOOKMARK [2][-]{subsection.4.1}{preprocessing}{section.4}% 9
 \BOOKMARK [2][-]{subsection.4.2}{trainModel}{section.4}% 10
@@ -14,7 +14,7 @@
 \BOOKMARK [2][-]{subsection.4.4}{Temps d'apprentissage du mod\350le}{section.4}% 14
 \BOOKMARK [1][-]{section.5}{R\351sultat obtenus}{}% 15
 \BOOKMARK [2][-]{subsection.5.1}{R\351sultat g\351n\351ral}{section.5}% 16
-\BOOKMARK [2][-]{subsection.5.2}{Analyse des classes d\351tailler}{section.5}% 17
+\BOOKMARK [2][-]{subsection.5.2}{Analyse d\351taill\351 des classes}{section.5}% 17
 \BOOKMARK [1][-]{section.6}{Les am\351liorations possibles}{}% 18
 \BOOKMARK [2][-]{subsection.6.1}{Travail sur le jeu de donn\351es}{section.6}% 19
 \BOOKMARK [2][-]{subsection.6.2}{Travail sur le mod\350le}{section.6}% 20
